@@ -1,4 +1,4 @@
-namespace ApiExample
+namespace ExampleApi
 {
     public class WeatherForecast
     {
