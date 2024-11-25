@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNet9", "DotNet9", "{B1DE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApi", "DotNet9\ExampleApi\ExampleApi.csproj", "{1BBC5DCF-492D-4CB6-AFC8-01FB7A50C394}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{ED353FF3-E11E-4665-B5D4-F61053ABEA06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{1BBC5DCF-492D-4CB6-AFC8-01FB7A50C394}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BBC5DCF-492D-4CB6-AFC8-01FB7A50C394}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BBC5DCF-492D-4CB6-AFC8-01FB7A50C394}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED353FF3-E11E-4665-B5D4-F61053ABEA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED353FF3-E11E-4665-B5D4-F61053ABEA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED353FF3-E11E-4665-B5D4-F61053ABEA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED353FF3-E11E-4665-B5D4-F61053ABEA06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1BBC5DCF-492D-4CB6-AFC8-01FB7A50C394} = {B1DE9A45-8BD7-4EAD-ADB1-A218DF988C5F}
+		{ED353FF3-E11E-4665-B5D4-F61053ABEA06} = {B1DE9A45-8BD7-4EAD-ADB1-A218DF988C5F}
 	EndGlobalSection
 EndGlobal
