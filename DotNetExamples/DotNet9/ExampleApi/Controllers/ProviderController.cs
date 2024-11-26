@@ -7,8 +7,8 @@ namespace ExampleApi.Controllers
     [ApiController]
     public class ProviderController : ControllerBase
     {
-        static private List<ProviderModel> providers = new List<ProviderModel>
-        {
+        private static List<Provider> providers =
+        [
             new() {
                 Id = 1,
                 Name = "Perrors el loco",
@@ -27,16 +27,16 @@ namespace ExampleApi.Controllers
                 ContactName = "Mario",
                 Phone = "23425"
             }
-        };
+        ];
 
         [HttpGet]
-        public ActionResult<List<ProviderModel>> GetProviders()
+        public ActionResult<List<Provider>> GetProviders()
         {
             return Ok(providers);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ProviderModel> GetProviderById(int id)
+        public ActionResult<Provider> GetProviderById(int id)
         {
             var provider = providers.FirstOrDefault(p => p.Id == id);
             if (provider is null)
@@ -46,7 +46,7 @@ namespace ExampleApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ProviderModel> AddProvider(ProviderModel newProvider)
+        public ActionResult<Provider> AddProvider(Provider newProvider)
         {
             if (newProvider is null)
                 return BadRequest();
@@ -60,7 +60,7 @@ namespace ExampleApi.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProvider(int id, ProviderModel updatedprovider)
+        public IActionResult UpdateProvider(int id, Provider updatedprovider)
         {
             var provider = providers.FirstOrDefault(p => p.Id == id);
             if (provider is null)
