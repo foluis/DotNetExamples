@@ -35,5 +35,6 @@ namespace ExampleApi.Data
                 }
             );
         }
+        public DbSet<Models.Game> Game { get; set; } = default!;
     }
 }
