@@ -1,0 +1,37 @@
+@InMemoryExample_HostAddress = https://localhost:7104
+
+GET {{InMemoryExample_HostAddress}}/api/videogame
+
+###
+
+POST {{InMemoryExample_HostAddress}}/api/videogame
+Content-Type: application/json
+
+{
+  "Id": 3,
+  "name": "Zelda 3",
+  "description": "Bacano 3"
+}
+
+###
+
+@id=3
+DELETE {{InMemoryExample_HostAddress}}/api/videogame/{{id}}
+
+###
+
+@id=3
+GET {{InMemoryExample_HostAddress}}/api/videogame/{{id}}
+
+###
+@id=3
+PUT {{InMemoryExample_HostAddress}}/api/videogame/{{id}}
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Zelda 2 - Cambio",
+  "description": "Bacano 2 -Cambio"
+}
+
+###

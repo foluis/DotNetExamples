@@ -18,16 +18,16 @@ namespace ExampleApi.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGame()
+        public async Task<ActionResult<IEnumerable<VideoGame>>> GetGame()
         {
-            return await _context.Game.ToListAsync();
+            return await _context.Games.ToListAsync();
         }
 
         // GET: api/Games/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        public async Task<ActionResult<VideoGame>> GetGame(int id)
         {
-            var game = await _context.Game.FindAsync(id);
+            var game = await _context.Games.FindAsync(id);
 
             if (game == null)
             {
@@ -40,7 +40,7 @@ namespace ExampleApi.Controllers
         // PUT: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int id, Game game)
+        public async Task<IActionResult> PutGame(int id, VideoGame game)
         {
             if (id != game.Id)
             {
@@ -71,10 +71,10 @@ namespace ExampleApi.Controllers
         // POST: api/Games
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Game>> PostGame(Game game)
+        public async Task<ActionResult<VideoGame>> PostGame(VideoGame game)
         {
             game.Id = new Random().Next(1000);
-            _context.Game.Add(game);
+            _context.Games.Add(game);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetGame", new { id = game.Id }, game);
@@ -84,13 +84,13 @@ namespace ExampleApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _context.Game.FindAsync(id);
+            var game = await _context.Games.FindAsync(id);
             if (game == null)
             {
                 return NotFound();
             }
 
-            _context.Game.Remove(game);
+            _context.Games.Remove(game);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -98,7 +98,7 @@ namespace ExampleApi.Controllers
 
         private bool GameExists(int id)
         {
-            return _context.Game.Any(e => e.Id == id);
+            return _context.Games.Any(e => e.Id == id);
         }
     }
 }

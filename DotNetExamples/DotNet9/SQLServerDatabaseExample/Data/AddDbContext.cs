@@ -1,41 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
 
-namespace ExampleApi.Data
+namespace SQLServerDatabaseExample.Data
 {
     public class AppDbContexts(DbContextOptions<AppDbContexts> options) : DbContext(options)
     {
-        public DbSet<Provider> Providers => Set<Provider>();
-        public DbSet<VideoGame> Games { get; set; } = default!;
+        public DbSet<VideoGame> VideoGames => Set<VideoGame>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Provider>().HasData(
+            modelBuilder.Entity<VideoGame>().HasData(
                 new()
                 {
                     Id = 1,
                     Name = "Perrors el loco",
-                    ContactName = "Saul",
-                    Phone = "1234"
+                    Description = "Saul"
                 },
                 new()
                 {
                     Id = 2,
                     Name = "Magico Mundo",
-                    ContactName = "Mario",
-                    Phone = "23425"
+                    Description = "Mario"
                 },
                 new()
                 {
                     Id = 3,
                     Name = "Carpintero",
-                    ContactName = "Mario",
-                    Phone = "23425"
+                    Description = "Mario"
                 }
             );
         }
-        
     }
 }

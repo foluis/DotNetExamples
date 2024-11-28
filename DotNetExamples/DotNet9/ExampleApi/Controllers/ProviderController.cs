@@ -7,10 +7,8 @@ namespace ExampleApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProviderController(AppDbContexts appContext) : ControllerBase
-    {
-        private readonly AppDbContexts _appContext = appContext;
-
+    public class ProviderController(AppDbContexts _appContext) : ControllerBase
+    {  
         //Old way, instead of using "primary constructors"
 
         //private readonly AppDbContexts _appContext;
@@ -40,7 +38,7 @@ namespace ExampleApi.Controllers
         {
             if (newProvider is null)
                 return BadRequest();
-            
+
             _appContext.Providers.Add(newProvider);
             await _appContext.SaveChangesAsync();
 
@@ -51,6 +49,9 @@ namespace ExampleApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProvider(int id, Provider updatedprovider)
         {
+            if (id != updatedprovider.Id)
+                return BadRequest();
+
             var provider = await _appContext.Providers.FirstOrDefaultAsync(p => p.Id == id);
             if (provider is null)
                 return NotFound();

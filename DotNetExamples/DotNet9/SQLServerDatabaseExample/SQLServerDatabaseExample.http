@@ -1,0 +1,38 @@
+@SQLServerDatabaseExample_HostAddress = https://localhost:7094
+
+GET {{SQLServerDatabaseExample_HostAddress}}/api/provider
+
+###
+
+@id=4
+GET {{SQLServerDatabaseExample_HostAddress}}/api/provider/{{id}}
+
+###
+
+
+POST {{SQLServerDatabaseExample_HostAddress}}/api/provider
+Content-Type: application/json
+
+{  
+  "name": "Nuevo",
+  "description": "Nuevo"
+}
+
+###
+
+@id=4
+PUT {{SQLServerDatabaseExample_HostAddress}}/api/provider/{{id}}
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "Nuevo - Updated",
+  "description": "Nuevo - Updated"
+}
+
+###
+
+@id=4
+DELETE {{SQLServerDatabaseExample_HostAddress}}/api/provider/{{id}}
+
+###
