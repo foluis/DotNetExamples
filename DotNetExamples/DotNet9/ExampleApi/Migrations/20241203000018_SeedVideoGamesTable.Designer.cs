@@ -4,6 +4,7 @@ using ExampleApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExampleApi.Migrations
 {
     [DbContext(typeof(AppDbContexts))]
-    partial class AppDbContextsModelSnapshot : ModelSnapshot
+    [Migration("20241203000018_SeedVideoGamesTable")]
+    partial class SeedVideoGamesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,55 +24,6 @@ namespace ExampleApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GenreVideoGame", b =>
-                {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideoGamesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenresId", "VideoGamesId");
-
-                    b.HasIndex("VideoGamesId");
-
-                    b.ToTable("GenreVideoGame");
-                });
-
-            modelBuilder.Entity("Models.Developer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Developers");
-                });
-
-            modelBuilder.Entity("Models.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genres");
-                });
 
             modelBuilder.Entity("Models.Provider", b =>
                 {
@@ -119,23 +73,6 @@ namespace ExampleApi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Models.Publisher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Publishers");
-                });
-
             modelBuilder.Entity("Models.VideoGame", b =>
                 {
                     b.Property<int>("Id")
@@ -144,23 +81,19 @@ namespace ExampleApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DeveloperId")
-                        .HasColumnType("int");
+                    b.Property<string>("Developer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Platform")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int");
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeveloperId");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("VideoGames");
 
@@ -168,19 +101,25 @@ namespace ExampleApi.Migrations
                         new
                         {
                             Id = 1,
+                            Developer = "Kachimoto",
                             Platform = "Nintendo",
+                            Publisher = "Hirul",
                             Title = "Zelda"
                         },
                         new
                         {
                             Id = 2,
+                            Developer = "Bowseer",
                             Platform = "Nintendo",
+                            Publisher = "Velozitrx",
                             Title = "Mario Kart"
                         },
                         new
                         {
                             Id = 3,
+                            Developer = "Alkadeishon",
                             Platform = "Nintendo",
+                            Publisher = "Rapliz",
                             Title = "Bomber Man"
                         });
                 });
@@ -193,7 +132,7 @@ namespace ExampleApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RealiseDate")
@@ -208,36 +147,6 @@ namespace ExampleApi.Migrations
                         .IsUnique();
 
                     b.ToTable("VideoGameDetails");
-                });
-
-            modelBuilder.Entity("GenreVideoGame", b =>
-                {
-                    b.HasOne("Models.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.VideoGame", null)
-                        .WithMany()
-                        .HasForeignKey("VideoGamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Models.VideoGame", b =>
-                {
-                    b.HasOne("Models.Developer", "Developer")
-                        .WithMany()
-                        .HasForeignKey("DeveloperId");
-
-                    b.HasOne("Models.Publisher", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("PublisherId");
-
-                    b.Navigation("Developer");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("Models.VideoGameDetails", b =>

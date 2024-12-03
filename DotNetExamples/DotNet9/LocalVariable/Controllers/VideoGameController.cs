@@ -12,14 +12,14 @@ namespace LocalVariable.Controllers
             new ()
             {
                 Id= 1,
-                Name = "Mario Bros",
-                Description = "PS5"
+                Title = "Mario Bros",
+                Platform = "PS5"
             },
             new ()
             {
                 Id= 2,
-                Name = "Ninja Tortules",
-                Description = "Nintendo"
+                Title = "Ninja Tortules",
+                Platform = "Nintendo"
             }
         };
 
@@ -58,8 +58,8 @@ namespace LocalVariable.Controllers
             if (game is null)
                 return NotFound();
 
-            game.Name = updatedGame.Name;
-            game.Description = updatedGame.Description;            
+            game.Title = updatedGame.Title;
+            game.Platform = updatedGame.Platform;            
 
             return NoContent();
         }

@@ -20,14 +20,25 @@ namespace ExampleApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VideoGame>>> GetGame()
         {
-            return await _context.Games.ToListAsync();
+            return await _context.VideoGames
+                .Include(v => v.VideoGameDetails)
+                .Include(d => d.Developer)
+                .Include(p => p.Publisher)
+                .Include(p => p.Genres)
+                .ToListAsync();
         }
 
         // GET: api/Games/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VideoGame>> GetGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            //var game = await _context.VideoGames
+            //    .Include(v => v.VideoGameDetails)
+            //    .FindAsync(id);
+
+            var game = await _context.VideoGames
+                .Include(v => v.VideoGameDetails)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (game == null)
             {
@@ -74,7 +85,7 @@ namespace ExampleApi.Controllers
         public async Task<ActionResult<VideoGame>> PostGame(VideoGame game)
         {
             game.Id = new Random().Next(1000);
-            _context.Games.Add(game);
+            _context.VideoGames.Add(game);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetGame", new { id = game.Id }, game);
@@ -84,13 +95,13 @@ namespace ExampleApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _context.VideoGames.FindAsync(id);
             if (game == null)
             {
                 return NotFound();
             }
 
-            _context.Games.Remove(game);
+            _context.VideoGames.Remove(game);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -98,7 +109,7 @@ namespace ExampleApi.Controllers
 
         private bool GameExists(int id)
         {
-            return _context.Games.Any(e => e.Id == id);
+            return _context.VideoGames.Any(e => e.Id == id);
         }
     }
 }

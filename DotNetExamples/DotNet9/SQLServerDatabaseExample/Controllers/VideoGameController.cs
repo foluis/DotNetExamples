@@ -47,8 +47,8 @@ namespace SQLServerDatabaseExample.Controllers
             if (provider is null)
                 return NotFound();
 
-            provider.Name = updatedGame.Name;
-            provider.Description = updatedGame.Description;
+            provider.Title = updatedGame.Title;
+            provider.Platform = updatedGame.Platform;
 
             await _appContext.SaveChangesAsync();
 

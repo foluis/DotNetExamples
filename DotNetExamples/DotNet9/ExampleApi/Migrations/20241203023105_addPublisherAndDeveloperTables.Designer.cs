@@ -4,6 +4,7 @@ using ExampleApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExampleApi.Migrations
 {
     [DbContext(typeof(AppDbContexts))]
-    partial class AppDbContextsModelSnapshot : ModelSnapshot
+    [Migration("20241203023105_addPublisherAndDeveloperTables")]
+    partial class addPublisherAndDeveloperTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace ExampleApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GenreVideoGame", b =>
-                {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideoGamesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenresId", "VideoGamesId");
-
-                    b.HasIndex("VideoGamesId");
-
-                    b.ToTable("GenreVideoGame");
-                });
 
             modelBuilder.Entity("Models.Developer", b =>
                 {
@@ -52,23 +40,6 @@ namespace ExampleApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Developers");
-                });
-
-            modelBuilder.Entity("Models.Genre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("Models.Provider", b =>
@@ -208,21 +179,6 @@ namespace ExampleApi.Migrations
                         .IsUnique();
 
                     b.ToTable("VideoGameDetails");
-                });
-
-            modelBuilder.Entity("GenreVideoGame", b =>
-                {
-                    b.HasOne("Models.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.VideoGame", null)
-                        .WithMany()
-                        .HasForeignKey("VideoGamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.VideoGame", b =>

@@ -1,10 +1,10 @@
-@LocalVariable_HostAddress = https://localhost:7237
+@LocalVariable_HostAddress = https://localhost:7075
 
-GET {{LocalVariable_HostAddress}}/api/videogame/
+GET {{LocalVariable_HostAddress}}/api/games/
 Accept: application/json
 ###
 
-POST {{LocalVariable_HostAddress}}/api/videogame
+POST {{LocalVariable_HostAddress}}/api/games
 Content-Type: application/json
 
 {   
@@ -14,17 +14,17 @@ Content-Type: application/json
 ###
 
 @id=3
-DELETE {{LocalVariable_HostAddress}}/api/videogame/{{id}}
+DELETE {{LocalVariable_HostAddress}}/api/games/{{id}}
 Content-Type: application/json
 ###
 
 @id=3
-GET {{LocalVariable_HostAddress}}/api/videogame/{{id}}
+GET {{LocalVariable_HostAddress}}/api/games/{{id}}
 Content-Type: application/json
 ###
 
 @id=3
-PUT {{LocalVariable_HostAddress}}/api/videogame/{{id}}
+PUT {{LocalVariable_HostAddress}}/api/games/{{id}}
 Content-Type: application/json
 
 {

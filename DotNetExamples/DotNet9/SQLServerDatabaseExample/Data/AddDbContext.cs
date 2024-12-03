@@ -15,20 +15,20 @@ namespace SQLServerDatabaseExample.Data
                 new()
                 {
                     Id = 1,
-                    Name = "Perrors el loco",
-                    Description = "Saul"
+                    Title = "Perrors el loco",
+                    Platform = "Saul"
                 },
                 new()
                 {
                     Id = 2,
-                    Name = "Magico Mundo",
-                    Description = "Mario"
+                    Title = "Magico Mundo",
+                    Platform = "Mario"
                 },
                 new()
                 {
                     Id = 3,
-                    Name = "Carpintero",
-                    Description = "Mario"
+                    Title = "Carpintero",
+                    Platform = "Mario"
                 }
             );
         }
