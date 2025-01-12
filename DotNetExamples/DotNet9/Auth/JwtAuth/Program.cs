@@ -32,25 +32,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
         };
 
-        //options.Events = new JwtBearerEvents
-        //{
-        //    OnMessageReceived = async context =>
-        //    {
-        //        var token = context.Request.Headers["Authorization"].ToString()?.Split(" ").Last();
-        //        if (!string.IsNullOrEmpty(token))
-        //        {
-        //            // Check blacklist (e.g., using a service)
-        //            var isBlacklisted = await TokenBlacklistService.IsTokenBlacklistedAsync(token);
-        //            if (isBlacklisted)
-        //            {
-        //                context.Fail("Token is blacklisted.");
-        //            }
-        //        }
-        //    }
-        //};
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = async context =>
+            {
+                var token = context.Request.Headers["Authorization"].ToString()?.Split(" ").Last();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    // Check blacklist (e.g., using a service)
+                    var isBlacklisted = await TokenBlacklistService.IsTokenBlacklistedAsync(token);
+                    if (isBlacklisted)
+                    {
+                        context.Fail("Token is blacklisted.");
+                    }
+                }
+            }
+        };
     });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
+builder.Services.AddScoped<TokenBlacklistService>();
 
 var app = builder.Build();
 

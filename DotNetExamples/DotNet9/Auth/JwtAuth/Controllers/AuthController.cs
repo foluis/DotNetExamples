@@ -38,20 +38,21 @@ namespace JwtAuth.Controllers
             return Ok(tokenResponse);
         }
 
-        //[Authorize]
-        //[HttpGet("logout")]
-        //public async Task<ActionResult<TokenResponseDto>> Logout()
-        //{
-        //    var userId = HttpContext.User
-        //        .FindAll(ClaimTypes.NameIdentifier)
-        //        .FirstOrDefault()!.Value;
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString()?.Split(" ").Last();
 
-        //    HttpContext.User.Claims.de
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token is missing.");
+            }
 
-        //    var tokenResponse = await authService.Logout(userId);
+            // Blacklist the token
+            await TokenBlacklistService.BlacklistTokenAsync(token);
 
-        //    return Ok("Loged out");
-        //}
+            return Ok("Logged out successfully.");
+        }
 
         [HttpPost("refresh-token")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken([FromBody] RefreshTokenRequestDto request)
