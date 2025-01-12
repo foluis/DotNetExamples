@@ -1,5 +1,7 @@
 ﻿using JwtAuth.Entities;
 using JwtAuth.Models;
+using JwtAuth.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,62 +14,69 @@ namespace JwtAuth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IConfiguration configuration) : ControllerBase
+    public class AuthController(IAuthService authService) : ControllerBase
     {
-        public static User user = new();
-
         [HttpPost("register")]
-        public ActionResult<User> Register([FromBody] UserDto userDto)
+        public async Task<ActionResult<User>> Register([FromBody] UserDto userDto)
         {
-            var hashedPassword = new PasswordHasher<User>().HashPassword(null, userDto.Password);
+            var user = await authService.RegisterAsync(userDto);
 
-            user.UserName = userDto.UserName;
-            user.PasswordHash = hashedPassword;
+            if (user is null)
+                return BadRequest("User already exists");
 
             return Ok(user);
         }
 
         [HttpPost("login")]
-        public ActionResult<string>Login([FromBody] UserDto userDto)
+        public async Task<ActionResult<TokenResponseDto>> Login([FromBody] UserDto userDto)
         {
-            if (user.UserName != userDto.UserName)
-            {
-                return BadRequest("Invalid username - not found");
-            }
+            var tokenResponse = await authService.LoginAsync(userDto);
 
-            if (new PasswordHasher<User>().VerifyHashedPassword(null, user.PasswordHash, userDto.Password) 
-                == PasswordVerificationResult.Failed)
-            {
-                return BadRequest("Invalid username - wrong password");
-            }
+            if (tokenResponse is null)
+                return BadRequest("Invalid username or password");
 
-            string token = CreateToken(user);
-
-            return Ok(token);
+            return Ok(tokenResponse);
         }
 
-        private string CreateToken(User user)
+        //[Authorize]
+        //[HttpGet("logout")]
+        //public async Task<ActionResult<TokenResponseDto>> Logout()
+        //{
+        //    var userId = HttpContext.User
+        //        .FindAll(ClaimTypes.NameIdentifier)
+        //        .FirstOrDefault()!.Value;
+
+        //    HttpContext.User.Claims.de
+
+        //    var tokenResponse = await authService.Logout(userId);
+
+        //    return Ok("Loged out");
+        //}
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<TokenResponseDto>> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
+            var result = await authService.RefreshTokensAsync(request);
+            if (result is null 
+                || result.AccessToken is null
+                || result.RefreshToken is null)
+                return Unauthorized("Invalid refresh token");
 
-            //Nuget for [SymmetricSecurityKey] -> System.IdentityModel.Tokens.Jwt
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Key")!));
+            return Ok(result);
+        }
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512); //key has to be at least 64 byts/characters
+        [Authorize]
+        [HttpGet]
+        public ActionResult AuthenticatedOnlyEndpoint()
+        {
+            return Ok("You are authenticated");
+        }
 
-            var tokenDescriptor = new JwtSecurityToken(
-                issuer: configuration.GetValue<string>("AppSettings:Issuer"),
-                audience: configuration.GetValue<string>("AppSettings:Audience"),
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpGet("admin-only")]
+        public ActionResult AdminOnlyEndpoint()
+        {
+            return Ok("You are an admin");
         }
 
         //private readonly IAuthService _authService;
