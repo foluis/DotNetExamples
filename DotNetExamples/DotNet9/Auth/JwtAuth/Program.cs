@@ -60,6 +60,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    //https://localhost:7221/openapi/v1.json
+    //https://localhost:7221/scalar/v1
+    //Authorization: Bearer {access token}
     app.MapScalarApiReference();
 }
 
